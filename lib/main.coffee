@@ -57,7 +57,7 @@ module.exports = Debug =
 			@customDebugPanel.hide()
 
 		@disposable = new CompositeDisposable
-		@disposable.add atom.commands.add 'atom-workspace', 'dbg:show': => atom.workspace.open(SIDEBAR_URI) # for dev purposes
+		@disposable.add atom.commands.add 'atom-workspace', 'dbg:show': => atom.workspace.open(SIDEBAR_URI, {searchAllPanes:true, split:'right'}) # for dev purposes
 		@disposable.add atom.workspace.addOpener (uri) =>
 			if uri is SIDEBAR_URI
 				sidebar2 = new Sidebar2
