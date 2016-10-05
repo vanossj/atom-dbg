@@ -1,9 +1,13 @@
 Ui = require './Ui'
 Toolbar = require './view/Toolbar'
 Sidebar = require './view/Sidebar'
+Sidebar2 = require './view/Sidebar2'
 Custom = require './view/Custom'
+# {SIDEBAR_URI} = require './view/view-uri'
+SIDEBAR_URI = 'atom://atom-dbg-sidebar'
 
 {CompositeDisposable, Emitter} = require 'atom'
+
 
 module.exports = Debug =
 	provider: null
@@ -53,6 +57,12 @@ module.exports = Debug =
 			@customDebugPanel.hide()
 
 		@disposable = new CompositeDisposable
+		@disposable.add atom.commands.add 'atom-workspace', 'dbg:show': => atom.workspace.open(SIDEBAR_URI) # for dev purposes
+		@disposable.add atom.workspace.addOpener (uri) =>
+			if uri is SIDEBAR_URI
+				sidebar2 = new Sidebar2
+				return sidebar2
+
 		@disposable.add atom.commands.add 'atom-workspace', 'dbg:custom-debug': => @customDebug()
 		@disposable.add atom.commands.add 'atom-workspace', 'dbg:stop': => @stop()
 		@disposable.add atom.commands.add 'atom-workspace', 'dbg:continue': => @continue()
